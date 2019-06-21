@@ -54,15 +54,11 @@ export default function(state = initialState, action) {
         }
       }
     case REMOVE_TRAVELED:
-      delete state.data[action.countryId]
+      state.data[action.countryId] = {fillKey: 'defaultFill'}
       return {
         data: {...state.data}
       }
-    //   case GET_ALL_TRAVELED:
-    //     return {
-    //       ...state,
-    //       data: {...action.data}
-    //     }
+
     default:
       return state
   }
