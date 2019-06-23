@@ -2,6 +2,7 @@
 
 const db = require('../server/db')
 const {User} = require('../server/db/models')
+const {Country} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -11,6 +12,28 @@ async function seed() {
     User.create({email: 'cody@email.com', password: '123'}),
     User.create({email: 'murphy@email.com', password: '123'})
   ])
+
+  const AFG = await Country.create({
+    name: 'Afghanistan',
+    countryId: 'AFG',
+    continent: 'Asia',
+    hint:
+      "This country's national sport is called “Buzkashi” or “goat-grabbing” and is regarded as the wildest game in the world!"
+  })
+  const AGO = await Country.create({
+    name: 'Angola',
+    countryId: 'AGO',
+    continent: 'Africa',
+    hint:
+      'This country was formerly Portuguese colony but gained self-rule in 1975!'
+  })
+
+  const ALB = await Country.create({
+    name: 'Albania',
+    countryId: 'ALB',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)

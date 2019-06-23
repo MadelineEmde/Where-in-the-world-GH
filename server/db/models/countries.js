@@ -1,21 +1,29 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const Country = db.define('county', {
-  countryCode: {
+const Country = db.define('country', {
+  name: {
     type: Sequelize.STRING,
-    unique: true,
     allowNull: false
   },
-  traveled: {
-    type: Sequelize.BOOLEAN,
+  countryId: {
+    type: Sequelize.STRING,
     allowNull: false
   },
-  journal: {
-    type: Sequelize.TEXT
+
+  continent: {
+    type: Sequelize.ENUM(
+      'Africa',
+      'Asia',
+      'Europe',
+      'North America',
+      'South America',
+      'Oceania'
+    ),
+    allowNull: false
   },
-  post: {
-    type: Sequelize.TEXT
+  hint: {
+    type: Sequelize.STRING
   }
 })
 

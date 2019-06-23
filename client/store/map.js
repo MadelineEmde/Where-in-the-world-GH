@@ -1,62 +1,90 @@
+import axios from 'axios'
 /**
  * ACTION TYPES
  */
-const ADD_TRAVELED = 'ADD_TRAVELED'
-const REMOVE_TRAVELED = 'REMOVE_TRAVELED'
+
+const ADDED_TRAVELED = 'ADD_TRAVELED'
+const REMOVED_TRAVELED = 'REMOVE_TRAVELED'
+const FOUND_STARTING_COUNTRY = 'FOUND_STARTING_COUNTRY'
+const DECREASED_GUESSES = 'DECREASED_GUESSES'
 
 /**
  * INITIAL STATE
  */
 
 const initialState = {
-  data: {
-    USA: {fillKey: 'filled'}
-  }
+  data: {},
+  guessed: [],
+  target: {},
+  remaingGuesses: Number(6)
 }
 
 /**
  * ACTION CREATORS
  */
 
-export const addTraveledAction = countryId => ({
-  type: ADD_TRAVELED,
-  countryId
+export const addTraveledAction = country => ({
+  type: ADDED_TRAVELED,
+  country
 })
 export const removeTraveledAction = countryId => ({
-  type: REMOVE_TRAVELED,
+  type: REMOVED_TRAVELED,
   countryId
 })
 
+export const findStartingCountry = country => ({
+  type: FOUND_STARTING_COUNTRY,
+  country
+})
+export const decreaseGuesses = () => ({
+  type: DECREASED_GUESSES
+})
 /**
  * THUNK CREATORS
  */
 
-// export const addTraveledThunk = id => {
-//   console.log('runningThunk')
-//   return dispatch => {
-//     try {
-//       dispatch(addTraveledAction(id))
-//     } catch (error) {
-//       console.error(error.stack)
-//     }
-//   }
-// }
+export const findStartingCountryThunk = () => async dispatch => {
+  try {
+    let randomCountryId = Math.floor(Math.random() * 4)
+    const {data} = await axios.get(`/api/countries/${randomCountryId}`)
+    dispatch(findStartingCountry(data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 /**
  * REDUCER
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case ADD_TRAVELED:
+    case ADDED_TRAVELED:
+      console.log('country in added travel', action.country.properties.name)
       return {
+        ...state,
         data: {
           ...state.data,
-          [action.countryId]: {fillKey: 'filled'}
-        }
+          [action.country.id]: {fillKey: 'filled'}
+        },
+        guessed: [...state.guessed, action.country.properties.name]
       }
-    case REMOVE_TRAVELED:
+    case REMOVED_TRAVELED:
       state.data[action.countryId] = {fillKey: 'defaultFill'}
       return {
+        ...state,
         data: {...state.data}
+      }
+    case DECREASED_GUESSES:
+      let updatedGuesses = state.remaingGuesses - 1
+      console.log(updatedGuesses, 'updated guesses')
+      return {
+        ...state,
+        remaingGuesses: updatedGuesses
+      }
+    case FOUND_STARTING_COUNTRY:
+      return {
+        ...state,
+        target: {...action.country}
       }
 
     default:

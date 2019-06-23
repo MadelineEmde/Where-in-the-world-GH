@@ -1,7 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Datamaps from 'datamaps'
-import {addTraveledAction, removeTraveledAction} from '../store/map'
+import {
+  addTraveledAction,
+  removeTraveledAction,
+  findStartingCountryThunk,
+  decreaseGuesses
+} from '../store/map'
 
 const MAP_CLEARING_PROPS = ['height', 'scope', 'setProjection', 'width']
 
@@ -21,6 +26,7 @@ class DisconnectedMap extends React.Component {
     if (this.props.responsive) {
       window.addEventListener('resize', this.resizeMap)
     }
+    this.props.findStarting()
     this.drawMap()
   }
 
@@ -34,21 +40,28 @@ class DisconnectedMap extends React.Component {
         defaultFill: '#000000'
       },
       data: {
-        ...this.props.traveled
+        ...this.props.data
       },
       done: datamap => {
         datamap.svg.selectAll('.datamaps-subunit').on('click', geography => {
-          let travel = this.props.traveled
+          console.log(geography, 'clicked geography')
+          let travel = this.props.data
           if (travel[geography.id]) {
+            //if a country has been selected before
             if (travel[geography.id].fillKey === 'filled') {
+              // check if it is still selected
+              //if so, remove selection
               this.props.removeTraveled(geography.id)
             } else {
-              this.props.addTraveled(geography.id)
+              //if it's been selected before but currently not full, dispatch add selection
+              this.props.addTraveled(geography)
             }
           } else {
-            this.props.addTraveled(geography.id)
+            //if a country has never been selected, add selection
+            this.props.addTraveled(geography)
+            this.props.decreaseGuesses()
           }
-          travel = this.props.traveled
+          travel = this.props.data
           this.map.updateChoropleth(travel)
         })
       }
@@ -61,18 +74,32 @@ class DisconnectedMap extends React.Component {
   }
 
   render() {
-    return <div id="container" />
+    return (
+      <div>
+        <div>Remaining guesses: {`${this.props.remaingGuesses}`}</div>
+        <div>
+          Explored:
+          {this.props.guessed.join(', ')}
+        </div>
+        <div id="container" />
+      </div>
+    )
   }
 }
 
 const mapState = state => ({
-  traveled: state.map.data,
+  data: state.map.data,
+  guessed: state.map.guessed,
+  target: state.map.target,
+  remaingGuesses: state.map.remaingGuesses,
   user: state.user
 })
 
 const mapDispatch = dispatch => ({
   addTraveled: countryId => dispatch(addTraveledAction(countryId)),
-  removeTraveled: countryId => dispatch(removeTraveledAction(countryId))
+  removeTraveled: countryId => dispatch(removeTraveledAction(countryId)),
+  findStarting: () => dispatch(findStartingCountryThunk()),
+  decreaseGuesses: () => dispatch(decreaseGuesses())
 })
 
 export default connect(mapState, mapDispatch)(DisconnectedMap)
