@@ -37,12 +37,14 @@ class DisconnectedMap extends React.Component {
         ...this.props.traveled
       },
       done: datamap => {
-        console.log(datamap, 'datamap')
         datamap.svg.selectAll('.datamaps-subunit').on('click', geography => {
           let travel = this.props.traveled
-          console.log(travel, 'travel before remove/add')
           if (travel[geography.id]) {
-            this.props.removeTraveled(geography.id)
+            if (travel[geography.id].fillKey === 'filled') {
+              this.props.removeTraveled(geography.id)
+            } else {
+              this.props.addTraveled(geography.id)
+            }
           } else {
             this.props.addTraveled(geography.id)
           }
