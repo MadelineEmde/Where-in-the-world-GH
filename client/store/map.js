@@ -7,6 +7,7 @@ const ADDED_TRAVELED = 'ADD_TRAVELED'
 const REMOVED_TRAVELED = 'REMOVE_TRAVELED'
 const FOUND_STARTING_COUNTRY = 'FOUND_STARTING_COUNTRY'
 const DECREASED_GUESSES = 'DECREASED_GUESSES'
+const CLEAR = 'CLEAR'
 
 /**
  * INITIAL STATE
@@ -38,6 +39,9 @@ export const findStartingCountry = country => ({
 })
 export const decreaseGuesses = () => ({
   type: DECREASED_GUESSES
+})
+export const clearAction = () => ({
+  type: CLEAR
 })
 /**
  * THUNK CREATORS
@@ -76,7 +80,6 @@ export default function(state = initialState, action) {
       }
     case DECREASED_GUESSES:
       let updatedGuesses = state.remaingGuesses - 1
-      console.log(updatedGuesses, 'updated guesses')
       return {
         ...state,
         remaingGuesses: updatedGuesses
@@ -85,6 +88,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         target: {...action.country}
+      }
+    case CLEAR:
+      return {
+        data: {},
+        guessed: [],
+        target: {},
+        remaingGuesses: Number(6)
       }
 
     default:

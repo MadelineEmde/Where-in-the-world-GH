@@ -7,6 +7,8 @@ import {
   findStartingCountryThunk,
   decreaseGuesses
 } from '../store/map'
+import Winner from './winner'
+import Loser from './loser'
 
 const MAP_CLEARING_PROPS = ['height', 'scope', 'setProjection', 'width']
 
@@ -19,6 +21,12 @@ class DisconnectedMap extends React.Component {
     super(props)
     this.resizeMap = this.resizeMap.bind(this)
     this.drawMap = this.drawMap.bind(this)
+    this.winnerFunc = this.winnerFunc.bind(this)
+    this.loserFunc = this.loserFunc.bind(this)
+    this.state = {
+      winner: false,
+      loser: false
+    }
   }
 
   componentDidMount() {
@@ -46,7 +54,10 @@ class DisconnectedMap extends React.Component {
         datamap.svg.selectAll('.datamaps-subunit').on('click', geography => {
           console.log(geography, 'clicked geography')
           let travel = this.props.data
-          if (travel[geography.id]) {
+          if (geography.id === this.props.target.countryId) {
+            console.log('winnerfunc running')
+            this.winnerFunc()
+          } else if (travel[geography.id]) {
             //if a country has been selected before
             if (travel[geography.id].fillKey === 'filled') {
               // check if it is still selected
@@ -60,6 +71,9 @@ class DisconnectedMap extends React.Component {
             //if a country has never been selected, add selection
             this.props.addTraveled(geography)
             this.props.decreaseGuesses()
+            if (this.props.remaingGuesses < 1) {
+              this.loserFunc()
+            }
           }
           travel = this.props.data
           this.map.updateChoropleth(travel)
@@ -69,6 +83,12 @@ class DisconnectedMap extends React.Component {
     // }
   }
 
+  winnerFunc() {
+    this.setState({winner: true})
+  }
+  loserFunc() {
+    this.setState({loser: true})
+  }
   resizeMap() {
     this.map.resize()
   }
@@ -76,11 +96,14 @@ class DisconnectedMap extends React.Component {
   render() {
     return (
       <div>
+        {this.state.winner === true ? <Winner /> : null}
+        {this.state.loser === true ? <Loser /> : null}
         <div>Remaining guesses: {`${this.props.remaingGuesses}`}</div>
         <div>
           Explored:
           {this.props.guessed.join(', ')}
         </div>
+        {/* <button onClick={() => <Hint> >HINT</button> */}
         <div id="container" />
       </div>
     )
