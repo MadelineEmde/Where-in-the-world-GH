@@ -49,7 +49,7 @@ export const clearAction = () => ({
 
 export const findStartingCountryThunk = () => async dispatch => {
   try {
-    let randomCountryId = Math.floor(Math.random() * 4)
+    let randomCountryId = Math.floor(Math.random() * 12)
     const {data} = await axios.get(`/api/countries/${randomCountryId}`)
     dispatch(findStartingCountry(data))
   } catch (error) {

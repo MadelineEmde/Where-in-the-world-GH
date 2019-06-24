@@ -35,6 +35,81 @@ async function seed() {
     hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
   })
 
+  const ARE = await Country.create({
+    name: 'United Arab Emirates',
+    countryId: 'ARE',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const ARG = await Country.create({
+    name: 'Argentina',
+    countryId: 'ARG',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const ARM = await Country.create({
+    name: 'Armenia',
+    countryId: 'ARM',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const AUS = await Country.create({
+    name: 'Australia',
+    countryId: 'AUS',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const AUT = await Country.create({
+    name: 'Austria',
+    countryId: 'AUT',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const AZE = await Country.create({
+    name: 'Azerbaijan',
+    countryId: 'AZE',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const BDI = await Country.create({
+    name: 'Burundi',
+    countryId: 'BDI',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const BEL = await Country.create({
+    name: 'Belgium',
+    countryId: 'BEL',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+  const BEN = await Country.create({
+    name: 'Benin',
+    countryId: 'BEN',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+  const BFA = await Country.create({
+    name: 'Burkina Faso',
+    countryId: 'BFA',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
+  const BGD = await Country.create({
+    name: 'Bangladesh',
+    countryId: 'BGD',
+    continent: 'Asia',
+    hint: 'Mother Teresa is the country’s heroine and sole Nobel laureate!'
+  })
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }

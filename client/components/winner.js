@@ -12,9 +12,9 @@ class Winner extends React.Component {
             <a
               className="close"
               href="#popup1"
-              onClick={() => console.log(this.props)}
+              onClick={() => this.props.clear()}
             >
-              ×
+              Start Over ×
             </a>
             <div className="content">YOU WON!!</div>
           </div>
@@ -28,4 +28,4 @@ const mapDispatch = dispatch => ({
   clear: () => dispatch(clearAction())
 })
 
-export default connect(mapDispatch)(Winner)
+export default connect(null, mapDispatch)(Winner)

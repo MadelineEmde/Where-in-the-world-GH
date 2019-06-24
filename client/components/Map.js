@@ -98,10 +98,19 @@ class DisconnectedMap extends React.Component {
       <div>
         {this.state.winner === true ? <Winner /> : null}
         {this.state.loser === true ? <Loser /> : null}
-        <div>Remaining guesses: {`${this.props.remaingGuesses}`}</div>
-        <div>
-          Explored:
-          {this.props.guessed.join(', ')}
+        <div id="nav">
+          <div>
+            <img
+              id="CS-logo"
+              src="./GH-Logo.png"
+              alt="Where in the world is GH?!"
+            />
+          </div>
+          <div>Remaining guesses: {`${this.props.remaingGuesses}`}</div>
+          <div>
+            Explored:
+            {this.props.guessed.join(', ')}
+          </div>
         </div>
         {/* <button onClick={() => <Hint> >HINT</button> */}
         <div id="container" />
